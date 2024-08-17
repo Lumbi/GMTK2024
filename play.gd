@@ -61,7 +61,7 @@ func _process(delta: float) -> void:
 		_hit_beat()
 
 	if Input.is_action_just_pressed("drop"):
-		if is_playing:
+		if is_playing && !$AnimationPlayer.is_playing():
 			if beat_time < beat_duration * beat_trailing_acceptance_threshold_ratio: # on time
 				_try_drop(current_beat_index)
 			elif beat_time > (beat_duration * (1 - beat_leading_acceptance_threshold_ratio)): # a bit early
