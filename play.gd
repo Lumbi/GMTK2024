@@ -22,6 +22,8 @@ var beat_trailing_acceptance_threshold_ratio: float = 0.20
 @onready var lane3: Node3D = get_node("Lanes/Lane3")
 @onready var lanes: Array = [lane0, lane1, lane2, lane3]
 
+var is_playing: bool = false
+
 func _ready() -> void:
 	randomize()
 	
@@ -59,10 +61,16 @@ func _process(delta: float) -> void:
 		_hit_beat()
 
 	if Input.is_action_just_pressed("drop"):
-		if beat_time < beat_duration * beat_trailing_acceptance_threshold_ratio: # on time
-			_try_drop(current_beat_index)
-		elif beat_time > (beat_duration * (1 - beat_leading_acceptance_threshold_ratio)): # a bit early
-			_try_drop((current_beat_index + 1) % 8)
+		if is_playing:
+			if beat_time < beat_duration * beat_trailing_acceptance_threshold_ratio: # on time
+				_try_drop(current_beat_index)
+			elif beat_time > (beat_duration * (1 - beat_leading_acceptance_threshold_ratio)): # a bit early
+				_try_drop((current_beat_index + 1) % 8)
+		else:
+			is_playing = true # TODO: Wait for camera to finish
+			$AnimationPlayer.current_animation = "play_start_camera"
+			$AnimationPlayer.play()
+			$HowTo.hide()
 
 func _try_drop(index: int) -> void:
 	if current_hover_block:
