@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://cmlpcfl6y7leo"]
+[gd_scene load_steps=15 format=3 uid="uid://cmlpcfl6y7leo"]
 
 [ext_resource type="PackedScene" uid="uid://do8peygsek4ww" path="res://lane.tscn" id="1_sltb7"]
 [ext_resource type="Script" path="res://play.gd" id="1_uihu7"]
 [ext_resource type="Material" uid="uid://bihl4c2i7nt7a" path="res://beat_arrow_material.tres" id="2_d3506"]
 [ext_resource type="Script" path="res://beat_arrow.gd" id="3_e8bs5"]
 [ext_resource type="Shader" path="res://grid.gdshader" id="5_413fk"]
+[ext_resource type="Shader" path="res://crt.gdshader" id="6_ohr5e"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ptk4i"]
 sky_top_color = Color(0.573551, 0.0276981, 1, 1)
@@ -22,7 +23,9 @@ background_mode = 2
 sky = SubResource("Sky_mn8la")
 glow_enabled = true
 glow_intensity = 0.64
-glow_bloom = 0.44
+glow_bloom = 0.98
+adjustment_enabled = true
+adjustment_saturation = 1.4
 
 [sub_resource type="BoxMesh" id="BoxMesh_f2r5g"]
 material = ExtResource("2_d3506")
@@ -38,11 +41,14 @@ shader = ExtResource("5_413fk")
 material = SubResource("ShaderMaterial_t30qn")
 size = Vector2(1000, 1000)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o3on5"]
+shader = ExtResource("6_ohr5e")
+
 [node name="root" type="Node3D"]
 script = ExtResource("1_uihu7")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0, 0.5, 10)
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 1.325, 10)
 environment = SubResource("Environment_jqgu0")
 current = true
 fov = 40.0
@@ -82,3 +88,10 @@ mesh = SubResource("PrismMesh_tvtlt")
 [node name="Grid" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.737, 0)
 mesh = SubResource("PlaneMesh_anbl6")
+
+[node name="CRT" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CRT"]
+material = SubResource("ShaderMaterial_o3on5")
+offset_right = 1280.0
+offset_bottom = 721.0
