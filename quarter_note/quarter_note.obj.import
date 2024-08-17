@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bwfehmv7npwyj"
+path="res://.godot/imported/quarter_note.obj-19b11fe8f24372a5ff08a59aa2a6d209.mesh"
+
+[deps]
+
+files=["res://.godot/imported/quarter_note.obj-19b11fe8f24372a5ff08a59aa2a6d209.mesh"]
+
+source_file="res://quarter_note/quarter_note.obj"
+dest_files=["res://.godot/imported/quarter_note.obj-19b11fe8f24372a5ff08a59aa2a6d209.mesh", "res://.godot/imported/quarter_note.obj-19b11fe8f24372a5ff08a59aa2a6d209.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

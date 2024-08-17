@@ -1,0 +1,84 @@
+[gd_scene load_steps=13 format=3 uid="uid://cmlpcfl6y7leo"]
+
+[ext_resource type="PackedScene" uid="uid://do8peygsek4ww" path="res://lane.tscn" id="1_sltb7"]
+[ext_resource type="Script" path="res://play.gd" id="1_uihu7"]
+[ext_resource type="Material" uid="uid://bihl4c2i7nt7a" path="res://beat_arrow_material.tres" id="2_d3506"]
+[ext_resource type="Script" path="res://beat_arrow.gd" id="3_e8bs5"]
+[ext_resource type="Shader" path="res://grid.gdshader" id="5_413fk"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ptk4i"]
+sky_top_color = Color(0.573551, 0.0276981, 1, 1)
+sky_horizon_color = Color(0.975526, 0.514588, 0, 1)
+sky_curve = 0.0337969
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.97244, 0.49517, 0.416715, 1)
+ground_curve = 0.0141421
+
+[sub_resource type="Sky" id="Sky_mn8la"]
+sky_material = SubResource("ProceduralSkyMaterial_ptk4i")
+
+[sub_resource type="Environment" id="Environment_jqgu0"]
+background_mode = 2
+sky = SubResource("Sky_mn8la")
+glow_enabled = true
+glow_intensity = 0.64
+glow_bloom = 0.44
+
+[sub_resource type="BoxMesh" id="BoxMesh_f2r5g"]
+material = ExtResource("2_d3506")
+
+[sub_resource type="PrismMesh" id="PrismMesh_tvtlt"]
+material = ExtResource("2_d3506")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t30qn"]
+render_priority = 0
+shader = ExtResource("5_413fk")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_anbl6"]
+material = SubResource("ShaderMaterial_t30qn")
+size = Vector2(1000, 1000)
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_uihu7")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0, 1, 10)
+environment = SubResource("Environment_jqgu0")
+current = true
+fov = 40.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.934981, -0.24077, 0.260464, 0.0821646, 0.861367, 0.501295, -0.345051, -0.4473, 0.825144, 0, 6.36168, 0)
+
+[node name="Lanes" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, -2.5, 0)
+
+[node name="Lane0" parent="Lanes" instance=ExtResource("1_sltb7")]
+
+[node name="Lane1" parent="Lanes" instance=ExtResource("1_sltb7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Lane2" parent="Lanes" instance=ExtResource("1_sltb7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="Lane3" parent="Lanes" instance=ExtResource("1_sltb7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="Lane4" parent="Lanes" instance=ExtResource("1_sltb7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+
+[node name="BeatArrow" type="Node3D" parent="."]
+transform = Transform3D(-0.5, -7.54979e-08, 0, 7.54979e-08, -0.5, 0, 0, 0, 0.5, -3.5, 3.2, 0)
+script = ExtResource("3_e8bs5")
+
+[node name="MeshBody" type="MeshInstance3D" parent="BeatArrow"]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, -1, 0)
+visible = false
+mesh = SubResource("BoxMesh_f2r5g")
+
+[node name="MeshTip" type="MeshInstance3D" parent="BeatArrow"]
+mesh = SubResource("PrismMesh_tvtlt")
+
+[node name="Grid" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.737, 0)
+mesh = SubResource("PlaneMesh_anbl6")

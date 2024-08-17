@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bihl4c2i7nt7a"]
+
+[resource]
+albedo_color = Color(1, 0.160784, 0.596078, 1)
+metallic_specular = 1.0
+emission = Color(0.484976, 0.0449456, 0.481099, 1)
+emission_energy_multiplier = 8.05
+rim_enabled = true
+rim_tint = 1.0
+refraction_scale = 1.0

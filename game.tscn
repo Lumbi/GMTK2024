@@ -1,3 +1,6 @@
 [gd_scene format=3 uid="uid://duod5aw5wyfts"]
 
 [node name="Root" type="Node2D"]
+
+[node name="Stuff" type="Node2D" parent="."]
+scale = Vector2(2, 2)
