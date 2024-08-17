@@ -7,6 +7,9 @@ var note: Node3D
 func is_empty() -> bool:
 	return assigned_block == null
 	
+func has_note() -> bool:
+	return note != null
+	
 func spawn_note() -> void:
 	note = note_scene.instantiate()
 	add_child(note)
@@ -25,7 +28,7 @@ func accept(block: Node3D) -> void:
 				_force_accept(block)
 				note.hide()
 			else:
-				block.queue_free()
+				block.destroy_shrink()
 		_:
 			_force_accept(block)
 			

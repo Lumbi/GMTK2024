@@ -64,9 +64,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 [node name="Lane3" parent="Lanes" instance=ExtResource("1_sltb7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 
-[node name="Lane4" parent="Lanes" instance=ExtResource("1_sltb7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-
 [node name="BeatArrow" type="Node3D" parent="."]
 transform = Transform3D(-0.5, -7.54979e-08, 0, 7.54979e-08, -0.5, 0, 0, 0, 0.5, -3.5, 3.2, 0)
 script = ExtResource("3_e8bs5")

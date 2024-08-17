@@ -3,6 +3,7 @@ extends Node3D
 const STATE_HOVER: int = 0
 const STATE_DROP: int = 1
 const STATE_PLACED: int = 2
+const STATE_DESTROY: int = 3
 var state: int = STATE_HOVER
 
 const DROP_DURATION = 0.2
@@ -11,6 +12,8 @@ var drop_end_position: Vector3
 var drop_time = 0
 
 var target_drop_slot: Node3D
+
+var until_destroy_time: float = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -29,6 +32,12 @@ func _process(delta: float) -> void:
 				state = STATE_PLACED
 				target_drop_slot.accept(self)
 			pass
+		STATE_DESTROY:
+			
+			until_destroy_time -= delta
+			if until_destroy_time <= 0:
+				queue_free()
+			pass
 		_:
 			pass
 	pass
@@ -41,3 +50,8 @@ func drop(slot: Node3D) -> void:
 	drop_time = 0
 	state = STATE_DROP
 	pass
+
+func destroy_shrink() -> void:
+	$AnimationPlayer.current_animation = "block_destroy_shrink"
+	$AnimationPlayer.play()
+	state = STATE_DESTROY

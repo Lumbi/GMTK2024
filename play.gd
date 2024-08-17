@@ -11,8 +11,9 @@ var beat_duration: float
 var beat_leading_acceptance_threshold_ratio: float = 0.20
 var beat_trailing_acceptance_threshold_ratio: float = 0.20
 
+@onready var note_block_scene: PackedScene = load("res://block_note.tscn")
+
 @onready var all_block_scenes: Array = [
-	load("res://block_note.tscn"), 
 	load("res://block_normal.tscn")
 ]
 
@@ -20,17 +21,18 @@ var beat_trailing_acceptance_threshold_ratio: float = 0.20
 @onready var lane1: Node3D = get_node("Lanes/Lane1")
 @onready var lane2: Node3D = get_node("Lanes/Lane2")
 @onready var lane3: Node3D = get_node("Lanes/Lane3")
-@onready var lane4: Node3D = get_node("Lanes/Lane4")
-@onready var lanes: Array = [lane0, lane1, lane2, lane3, lane4]
+@onready var lanes: Array = [lane0, lane1, lane2, lane3]
 
 func _ready() -> void:
+	randomize()
+	
 	_spawn_hover_block()
 	_hit_beat()
 	
 	# TEST
 	lane0.get_child(0).spawn_note()
 	lane2.get_child(2).spawn_note()
-	lane4.get_child(4).spawn_note()
+	lane3.get_child(4).spawn_note()
 	
 	pass
 
@@ -88,10 +90,37 @@ func _spawn_hover_block(queue: bool = false) -> void:
 
 	if current_hover_block: return
 
-	var block_scene: PackedScene = all_block_scenes.pick_random()
+	var note_is_available = _has_available_note()
+	print("note_is_available ", note_is_available)
+	
+	var block_scene: PackedScene
+	if note_is_available && randf() > 0.5:
+		block_scene = note_block_scene
+	else:
+		block_scene = all_block_scenes.pick_random()
+
 	current_hover_block = block_scene.instantiate()
 	current_hover_block.transform.origin = beat_arrow.transform.origin
 	current_hover_block.transform.origin.y -= 0.8
 	add_child(current_hover_block)
 	
 	queue_spawn_hover_block = false
+
+func _has_available_note() -> bool:
+	for x in 8:
+		for y in 4:
+			var lane = lanes[y]
+			var slot = lane.get_child(x)
+			if slot.has_note() && slot.is_empty():
+				if y == 0:
+					return true # exit early if on bottom lane
+				var below_slots_all_occupied = true
+				for by in range(y-1, 0, -1):
+					var below_lane = lanes[by]
+					var below_block = below_lane.get_child(x)
+					if below_block.is_empty():
+						below_slots_all_occupied = false
+						break
+				if below_slots_all_occupied:
+					return true
+	return false
