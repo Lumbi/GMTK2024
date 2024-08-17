@@ -42,7 +42,7 @@ size = Vector2(1000, 1000)
 script = ExtResource("1_uihu7")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0, 1, 10)
+transform = Transform3D(1, 0, 0, 0, 0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0, 0.5, 10)
 environment = SubResource("Environment_jqgu0")
 current = true
 fov = 40.0
@@ -68,7 +68,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 index = 3
 
 [node name="BeatArrow" type="Node3D" parent="."]
-transform = Transform3D(-0.5, -7.54979e-08, 0, 7.54979e-08, -0.5, 0, 0, 0, 0.5, -3.5, 3.2, 0)
+transform = Transform3D(-0.5, -7.54979e-08, 0, 7.54979e-08, -0.5, 0, 0, 0, 0.5, -3.5, 2.2, 0)
 script = ExtResource("3_e8bs5")
 
 [node name="MeshBody" type="MeshInstance3D" parent="BeatArrow"]

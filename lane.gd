@@ -8,6 +8,6 @@ func _ready() -> void:
 		slot.index = x
 		slot.lane_index = index
 
-func hit_beat(index: int) -> void:
-	var slot: Node3D = get_child(index)
+func hit_beat(i: int) -> void:
+	var slot: Node3D = get_child(i)
 	slot.hit_beat()

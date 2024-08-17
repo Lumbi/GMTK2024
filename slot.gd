@@ -21,7 +21,7 @@ func hit_beat() -> void:
 	$AnimationPlayer.play()
 	
 	if assigned_block:
-		if note && assigned_block:
+		if note && assigned_block && assigned_block.get_meta("type") == "note":
 			note.play()
 		else:
 			match assigned_block.get_meta("type"):
@@ -37,14 +37,19 @@ func accept(block: Node3D) -> void:
 			else:
 				block.destroy_shrink()
 		_:
-			_force_accept(block)
+			if !note:
+				_force_accept(block)
+			else:
+				block.destroy_shrink()
 
 # Clears the assigned block
 func clear() -> void:
 	if assigned_block:
-		print("CLEAR SLOT ", index, ",", lane_index)
 		assigned_block.destroy_shrink()
 		assigned_block = null
+
+	if note:
+		note.show()
 
 func _force_accept(block: Node3D) -> void:
 	assigned_block = block
@@ -72,4 +77,3 @@ func _bomb_blow_around() -> void:
 
 	# destroy own block
 	clear()
-	# TODO: drop down blocks

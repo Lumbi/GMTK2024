@@ -1,12 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://bqeye12r3d05c"]
 
 [ext_resource type="PackedScene" uid="uid://clfnkyqlwrcqq" path="res://block_base.tscn" id="1_4gej2"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ai7d5"]
-albedo_color = Color(1, 0.55, 0, 1)
+[ext_resource type="Material" uid="uid://bh6t3o3c4saie" path="res://block_normal_material.tres" id="2_ol5sa"]
 
 [node name="Block" instance=ExtResource("1_4gej2")]
 metadata/type = &"normal"
 
 [node name="MeshInstance3D" parent="." index="0"]
-surface_material_override/0 = SubResource("StandardMaterial3D_ai7d5")
+surface_material_override/0 = ExtResource("2_ol5sa")

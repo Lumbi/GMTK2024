@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=4 uid="uid://uuu68faabbvn"]
+[gd_scene load_steps=6 format=4 uid="uid://uuu68faabbvn"]
 
 [ext_resource type="PackedScene" uid="uid://clfnkyqlwrcqq" path="res://block_base.tscn" id="1_natrn"]
+[ext_resource type="Material" uid="uid://bh6t3o3c4saie" path="res://block_normal_material.tres" id="2_ekrj3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q4v2h"]
+albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ael7b"]
 _surfaces = [{
@@ -38,6 +40,9 @@ shadow_mesh = SubResource("ArrayMesh_ael7b")
 
 [node name="BlockBomb" instance=ExtResource("1_natrn")]
 metadata/type = &"bomb"
+
+[node name="MeshInstance3D" parent="." index="0"]
+surface_material_override/0 = ExtResource("2_ekrj3")
 
 [node name="cartoon_bomb" type="Node3D" parent="." index="2"]
 transform = Transform3D(-6.84083e-08, 0, -1.565, 0, 1.565, 0, 1.565, 0, -6.84083e-08, 0, -0.143355, 0.365096)

@@ -12,11 +12,8 @@ var beat_leading_acceptance_threshold_ratio: float = 0.20
 var beat_trailing_acceptance_threshold_ratio: float = 0.20
 
 @onready var note_block_scene: PackedScene = load("res://block_note.tscn")
-
-@onready var all_block_scenes: Array = [
-	load("res://block_normal.tscn"),
-	load("res://block_bomb.tscn"),
-]
+@onready var normal_block_scene: PackedScene = load("res://block_normal.tscn")
+@onready var bomb_block_scene: PackedScene = load("res://block_bomb.tscn")
 
 @onready var lane0: Node3D = get_node("Lanes/Lane0")
 @onready var lane1: Node3D = get_node("Lanes/Lane1")
@@ -28,10 +25,9 @@ func _ready() -> void:
 	randomize()
 	
 	_spawn_hover_block()
-	_hit_beat()
 	
 	# TEST
-	lane0.get_child(0).spawn_note()
+	# lane0.get_child(0).spawn_note()
 	lane2.get_child(2).spawn_note()
 	lane3.get_child(4).spawn_note()
 	
@@ -59,11 +55,14 @@ func _try_drop(index: int) -> void:
 			current_hover_block = null
 	
 func _find_available_slot_at_index(index: int) -> Node3D:
-	for lane in lanes:
-		var slot = lane.get_child(index)
+	var last_empty_slot: Node3D
+	for y in [3, 2, 1, 0]:
+		var slot = lanes[y].get_child(index)
 		if slot.is_empty():
-			return slot
-	return null
+			last_empty_slot = slot
+		else:
+			break
+	return last_empty_slot
 
 func _hit_beat() -> void:
 	current_beat_index += 1
@@ -95,10 +94,13 @@ func _spawn_hover_block(queue: bool = false) -> void:
 	print("note_is_available ", note_is_available)
 	
 	var block_scene: PackedScene
-	if note_is_available && randf() > 0.5:
+	var random = randf()
+	if note_is_available && random > 0.5:
 		block_scene = note_block_scene
+	elif random < 0.1:
+		block_scene = bomb_block_scene
 	else:
-		block_scene = all_block_scenes.pick_random()
+		block_scene = normal_block_scene
 
 	current_hover_block = block_scene.instantiate()
 	current_hover_block.transform.origin = beat_arrow.transform.origin
@@ -125,3 +127,17 @@ func _has_available_note() -> bool:
 				if below_slots_all_occupied:
 					return true
 	return false
+
+# NOT SURE IF I WANT THIS
+func _drop_blocks_in_slots() -> void:
+	for x in 8:
+		for y in 4:
+			var y_below = y -1
+			if y_below >=0:
+				var lane = lanes[y]
+				var slot = lane.get_child(x)
+				var lane_below = lanes[y_below]
+				var slot_below = lane_below.get_child(x)
+				if !slot.is_empty() && slot_below.is_empty():
+					slot.assigned_block.drop(slot_below)
+					slot_below.accept(slot.assigned_block)
