@@ -12,18 +12,19 @@ func is_empty() -> bool:
 func has_note() -> bool:
 	return note != null
 	
-func spawn_note(key: StringName) -> void:
+func spawn_note(keyA: StringName, keyB: StringName) -> void:
 	note = note_scene.instantiate()
-	note.key = key
+	note.keyA = keyA
+	note.keyB = keyB
 	add_child(note)
 
-func hit_beat() -> void:
+func hit_beat(loop_index: int) -> void:
 	$AnimationPlayer.current_animation = "slot_beat_anim"
 	$AnimationPlayer.play()
 	
 	if assigned_block:
 		if note && assigned_block.get_meta("type") == "note":
-			note.play()
+			note.play(loop_index)
 		else:
 			match assigned_block.get_meta("type"):
 				"bomb": _bomb_blow_around()

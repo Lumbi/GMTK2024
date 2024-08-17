@@ -6,6 +6,7 @@ extends Node3D
 var current_hover_block: Node3D
 var queue_spawn_hover_block: bool = false
 var current_beat_index: int = 0
+var current_loop_index: int = 0
 var beat_time: float = 0
 var beat_duration: float
 var beat_leading_acceptance_threshold_ratio: float = 0.20
@@ -25,17 +26,28 @@ func _ready() -> void:
 	randomize()
 	
 	_spawn_hover_block()
+
+ 	# BASS
+	lane1.get_child(0).spawn_note("BASS1", "BASS3")
+	lane0.get_child(4).spawn_note("BASS2", "BASS4")
+	
+	# SYNTH
+	lane2.get_child(0).spawn_note("SYNTHA1", "SYNTHA1")
+	lane3.get_child(1).spawn_note("SYNTHA2", "SYNTHA2")
+	lane2.get_child(3).spawn_note("SYNTHA4", "SYNTHA4")
+	lane3.get_child(4).spawn_note("SYNTHA5", "SYNTHA5")
+	lane2.get_child(7).spawn_note("SYNTHA8", "SYNTHA8")
 	
 	# TEST
-	lane0.get_child(0).spawn_note("C0_2")
-	lane0.get_child(2).spawn_note("C0_3")
-	lane0.get_child(4).spawn_note("C0_4")
-	lane0.get_child(6).spawn_note("C0_4")
+	#lane0.get_child(0).spawn_note("C0_2")
+	#lane0.get_child(2).spawn_note("C0_3")
+	#lane0.get_child(4).spawn_note("C0_4")
+	#lane0.get_child(6).spawn_note("C0_4")
 	
-	lane1.get_child(1).spawn_note("C0_4")
+	#lane1.get_child(1).spawn_note(" C0_4")
 	# lane1.get_child(2).spawn_note("C1_2")
-	lane1.get_child(4).spawn_note("C1_3")
-	lane1.get_child(6).spawn_note("C1_2")
+	#lane1.get_child(4).spawn_note("C1_3")
+	#lane1.get_child(6).spawn_note("C1_2")
 	
 	pass
 
@@ -74,6 +86,7 @@ func _hit_beat() -> void:
 	current_beat_index += 1
 	if (current_beat_index >= 8):
 		current_beat_index = 0
+		current_loop_index += 1
 
 	# Move the arrow
 	beat_arrow.move_to_beat_index(current_beat_index)
@@ -87,7 +100,7 @@ func _hit_beat() -> void:
 		
 	# Lane beat	
 	for lane in lanes:
-		lane.hit_beat(current_beat_index)
+		lane.hit_beat(current_loop_index, current_beat_index)
 
 func _spawn_hover_block(queue: bool = false) -> void:
 	if queue && !queue_spawn_hover_block:
@@ -101,9 +114,9 @@ func _spawn_hover_block(queue: bool = false) -> void:
 	
 	var block_scene: PackedScene
 	var random = randf()
-	if note_is_available && random > 0.5:
+	if note_is_available && random > 0.3:
 		block_scene = note_block_scene
-	elif random < 0.1:
+	elif random < 0.2:
 		block_scene = bomb_block_scene
 	else:
 		block_scene = normal_block_scene
@@ -124,7 +137,7 @@ func _has_available_note() -> bool:
 				if y == 0:
 					return true # exit early if on bottom lane
 				var below_slots_all_occupied = true
-				for by in range(y-1, 0, -1):
+				for by in range(y-1, -1, -1):
 					var below_lane = lanes[by]
 					var below_block = below_lane.get_child(x)
 					if below_block.is_empty():

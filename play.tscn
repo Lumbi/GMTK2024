@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://beat_arrow.gd" id="3_e8bs5"]
 [ext_resource type="Shader" path="res://grid.gdshader" id="5_413fk"]
 [ext_resource type="Shader" path="res://crt.gdshader" id="6_ohr5e"]
-[ext_resource type="AudioStream" uid="uid://d3o5ri8qrd3rf" path="res://audio/GMTK2024.wav" id="7_5233g"]
+[ext_resource type="AudioStream" uid="uid://ce0i2wwussryr" path="res://audio/song/GMTK2024-beat.wav" id="7_6cwqp"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ptk4i"]
 sky_top_color = Color(0.573551, 0.0276981, 1, 1)
@@ -97,6 +97,6 @@ material = SubResource("ShaderMaterial_o3on5")
 offset_right = 1280.0
 offset_bottom = 721.0
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("7_5233g")
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_6cwqp")
 autoplay = true
