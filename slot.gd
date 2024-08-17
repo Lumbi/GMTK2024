@@ -12,8 +12,9 @@ func is_empty() -> bool:
 func has_note() -> bool:
 	return note != null
 	
-func spawn_note() -> void:
+func spawn_note(key: StringName) -> void:
 	note = note_scene.instantiate()
+	note.key = key
 	add_child(note)
 
 func hit_beat() -> void:
@@ -21,7 +22,7 @@ func hit_beat() -> void:
 	$AnimationPlayer.play()
 	
 	if assigned_block:
-		if note && assigned_block && assigned_block.get_meta("type") == "note":
+		if note && assigned_block.get_meta("type") == "note":
 			note.play()
 		else:
 			match assigned_block.get_meta("type"):

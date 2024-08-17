@@ -27,9 +27,15 @@ func _ready() -> void:
 	_spawn_hover_block()
 	
 	# TEST
-	# lane0.get_child(0).spawn_note()
-	lane2.get_child(2).spawn_note()
-	lane3.get_child(4).spawn_note()
+	lane0.get_child(0).spawn_note("C0_2")
+	lane0.get_child(2).spawn_note("C0_3")
+	lane0.get_child(4).spawn_note("C0_4")
+	lane0.get_child(6).spawn_note("C0_4")
+	
+	lane1.get_child(1).spawn_note("C0_4")
+	# lane1.get_child(2).spawn_note("C1_2")
+	lane1.get_child(4).spawn_note("C1_3")
+	lane1.get_child(6).spawn_note("C1_2")
 	
 	pass
 

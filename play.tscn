@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cmlpcfl6y7leo"]
+[gd_scene load_steps=16 format=3 uid="uid://cmlpcfl6y7leo"]
 
 [ext_resource type="PackedScene" uid="uid://do8peygsek4ww" path="res://lane.tscn" id="1_sltb7"]
 [ext_resource type="Script" path="res://play.gd" id="1_uihu7"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://beat_arrow.gd" id="3_e8bs5"]
 [ext_resource type="Shader" path="res://grid.gdshader" id="5_413fk"]
 [ext_resource type="Shader" path="res://crt.gdshader" id="6_ohr5e"]
+[ext_resource type="AudioStream" uid="uid://d3o5ri8qrd3rf" path="res://audio/GMTK2024.wav" id="7_5233g"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ptk4i"]
 sky_top_color = Color(0.573551, 0.0276981, 1, 1)
@@ -95,3 +96,7 @@ mesh = SubResource("PlaneMesh_anbl6")
 material = SubResource("ShaderMaterial_o3on5")
 offset_right = 1280.0
 offset_bottom = 721.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_5233g")
+autoplay = true
