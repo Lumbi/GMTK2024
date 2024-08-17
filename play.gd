@@ -14,7 +14,8 @@ var beat_trailing_acceptance_threshold_ratio: float = 0.20
 @onready var note_block_scene: PackedScene = load("res://block_note.tscn")
 
 @onready var all_block_scenes: Array = [
-	load("res://block_normal.tscn")
+	load("res://block_normal.tscn"),
+	load("res://block_bomb.tscn"),
 ]
 
 @onready var lane0: Node3D = get_node("Lanes/Lane0")

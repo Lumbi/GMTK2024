@@ -1,0 +1,62 @@
+[gd_scene load_steps=8 format=3 uid="uid://dgt2t7qp5hn8a"]
+
+[ext_resource type="Script" path="res://slot.gd" id="1_c4y8r"]
+[ext_resource type="Shader" path="res://slot.gdshader" id="1_ruwgw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1nkrv"]
+render_priority = 0
+shader = ExtResource("1_ruwgw")
+
+[sub_resource type="BoxMesh" id="BoxMesh_chnqa"]
+material = SubResource("ShaderMaterial_1nkrv")
+
+[sub_resource type="Animation" id="Animation_asoue"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.9, 0.9, 0.9)]
+}
+
+[sub_resource type="Animation" id="Animation_eqapd"]
+resource_name = "slot_beat_anim"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1.2, 1.2, 1.2), Vector3(0.9, 0.9, 0.9), Vector3(0.9, 0.9, 0.9)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_510bj"]
+_data = {
+"RESET": SubResource("Animation_asoue"),
+"slot_beat_anim": SubResource("Animation_eqapd")
+}
+
+[node name="Slot" type="Node3D"]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
+script = ExtResource("1_c4y8r")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
+mesh = SubResource("BoxMesh_chnqa")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+deterministic = true
+libraries = {
+"": SubResource("AnimationLibrary_510bj")
+}
