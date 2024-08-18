@@ -225,7 +225,8 @@ func _cannot_place_more_blocks() -> bool:
 	return true
 
 func _play_gameover() -> void:
-	current_hover_block.hide()
+	if current_hover_block:
+		current_hover_block.hide()
 	$BeatArrow.hide()
 	if is_win:
 		$GameOver.text = "Thank you for playing"
