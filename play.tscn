@@ -164,6 +164,7 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_nafii"]
 resource_name = "gameover"
+length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -171,10 +172,10 @@ tracks/0/path = NodePath("GameOver:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2, 0.266667, 0.333333, 1),
-"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.466667, 0.533333, 0.6, 0.666667, 0.733333, 0.8, 1.46667),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0),
 "update": 1,
-"values": [false, true, false, true, false, true, true]
+"values": [false, false, true, false, true, false, true, true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_aw04j"]

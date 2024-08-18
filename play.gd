@@ -8,10 +8,11 @@ extends Node3D
 var current_hover_block: Node3D
 var first_block: bool = true
 var queue_spawn_hover_block: bool = false
-var current_beat_index: int = 0
+var next_beat_index: int = 0
 var current_loop_index: int = 0
 var beat_time: float = 0
 var beat_duration: float
+var bar_duration: float
 var beat_leading_acceptance_threshold_ratio: float = 0.20
 var beat_trailing_acceptance_threshold_ratio: float = 0.20
 
@@ -61,19 +62,27 @@ func _ready() -> void:
 	pass
 
 func _process(delta: float) -> void:
-	beat_time += delta
 	beat_duration = (1.0 / (bpm * 2.0) * 60.0)
-	if (beat_time >= beat_duration):
-		beat_time = 0
-		_hit_beat()
+	bar_duration = beat_duration * 8
+
+	var bar_time = $BGM.get_playback_position()
+	while bar_time > bar_duration:
+		bar_time -= bar_duration
+
+	var beat_index: int = floori(bar_time / beat_duration)
+	
+	beat_time = bar_time - (beat_index * beat_duration)
+
+	if bar_time >= next_beat_index * beat_duration && bar_time < (next_beat_index + 1) * beat_duration:
+		_hit_beat(beat_index)
 
 	if !is_gameover:
 		if Input.is_action_just_pressed("drop") && current_hover_block:
 			if is_playing && !$AnimationPlayer.is_playing():
 				if beat_time < beat_duration * beat_trailing_acceptance_threshold_ratio: # on time
-					_try_drop(current_beat_index)
+					_try_drop(beat_index)
 				elif beat_time > (beat_duration * (1 - beat_leading_acceptance_threshold_ratio)): # a bit early
-					_try_drop((current_beat_index + 1) % 8)
+					_try_drop((beat_index + 1) % 8)
 				else:
 					$Fail.transform.origin = current_hover_block.transform.origin
 					$Fail.transform.origin.z += 0.5
@@ -102,14 +111,11 @@ func _find_available_slot_at_index(index: int) -> Node3D:
 			break
 	return last_empty_slot
 
-func _hit_beat() -> void:
-	current_beat_index += 1
-	if (current_beat_index >= 8):
-		current_beat_index = 0
-		current_loop_index += 1
-
+func _hit_beat(beat_index: int) -> void:
+	next_beat_index = (beat_index + 1) % 8
+	
 	# Move the arrow
-	beat_arrow.move_to_beat_index(current_beat_index)
+	beat_arrow.move_to_beat_index(beat_index)
 	
 	# Move the hover block
 	if current_hover_block:
@@ -120,7 +126,10 @@ func _hit_beat() -> void:
 		
 	# Lane beat	
 	for lane in lanes:
-		lane.hit_beat(current_loop_index, current_beat_index)
+		lane.hit_beat(current_loop_index, beat_index)
+		
+	if (beat_index == 7):
+		current_loop_index += 1
 		
 	# Win / Lose
 	if !is_gameover:
@@ -145,13 +154,12 @@ func _spawn_hover_block(queue: bool = false) -> void:
 	var note_is_available = _has_available_note()
 
 	var block_scene: PackedScene
-	var random = randf()
 	if first_block:
 		first_block = false
 		block_scene = normal_block_scene
-	elif note_is_available && random > 0.6:
+	elif note_is_available && randf() < 0.4:
 		block_scene = note_block_scene
-	elif random < 0.25:
+	elif randf() < 0.25:
 		block_scene = bomb_block_scene
 	else:
 		block_scene = normal_block_scene
