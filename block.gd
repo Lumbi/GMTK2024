@@ -51,6 +51,11 @@ func drop(slot: Node3D) -> void:
 	state = STATE_DROP
 	pass
 
+func hit_beat() -> void:
+	if get_meta("type") == "note":
+		$AnimationPlayer.current_animation = "bounce"
+		$AnimationPlayer.play()
+
 func destroy_shrink() -> void:
 	$AnimationPlayer.current_animation = "block_destroy_shrink"
 	$AnimationPlayer.play()

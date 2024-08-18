@@ -1,9 +1,12 @@
 extends Node3D
 
+# TODO: Check if audio stream is playing and sync with beat
+
 @export var bpm: float = 50
 
 @onready var beat_arrow: Node3D = get_node("BeatArrow")
 var current_hover_block: Node3D
+var first_block: bool = true
 var queue_spawn_hover_block: bool = false
 var current_beat_index: int = 0
 var current_loop_index: int = 0
@@ -23,8 +26,12 @@ var beat_trailing_acceptance_threshold_ratio: float = 0.20
 @onready var lanes: Array = [lane0, lane1, lane2, lane3]
 
 var is_playing: bool = false
+var is_gameover: bool = false
+var is_win: bool = false
 
 func _ready() -> void:
+	$GameOver.hide()
+	
 	randomize()
 	
 	_spawn_hover_block()
@@ -60,17 +67,22 @@ func _process(delta: float) -> void:
 		beat_time = 0
 		_hit_beat()
 
-	if Input.is_action_just_pressed("drop"):
-		if is_playing && !$AnimationPlayer.is_playing():
-			if beat_time < beat_duration * beat_trailing_acceptance_threshold_ratio: # on time
-				_try_drop(current_beat_index)
-			elif beat_time > (beat_duration * (1 - beat_leading_acceptance_threshold_ratio)): # a bit early
-				_try_drop((current_beat_index + 1) % 8)
-		else:
-			is_playing = true # TODO: Wait for camera to finish
-			$AnimationPlayer.current_animation = "play_start_camera"
-			$AnimationPlayer.play()
-			$HowTo.hide()
+	if !is_gameover:
+		if Input.is_action_just_pressed("drop") && current_hover_block:
+			if is_playing && !$AnimationPlayer.is_playing():
+				if beat_time < beat_duration * beat_trailing_acceptance_threshold_ratio: # on time
+					_try_drop(current_beat_index)
+				elif beat_time > (beat_duration * (1 - beat_leading_acceptance_threshold_ratio)): # a bit early
+					_try_drop((current_beat_index + 1) % 8)
+				else:
+					$Fail.transform.origin = current_hover_block.transform.origin
+					$Fail.transform.origin.z += 0.5
+					$Fail.flash()
+			else:
+				is_playing = true
+				$AnimationPlayer.current_animation = "play_start_camera"
+				$AnimationPlayer.play()
+				$HowTo.hide()
 
 func _try_drop(index: int) -> void:
 	if current_hover_block:
@@ -109,8 +121,21 @@ func _hit_beat() -> void:
 	# Lane beat	
 	for lane in lanes:
 		lane.hit_beat(current_loop_index, current_beat_index)
+		
+	# Win / Lose
+	if !is_gameover:
+		if _all_note_blocks_covered():
+			is_gameover = true
+			is_win = true
+			_play_gameover()
+		elif _cannot_place_more_blocks():
+			is_gameover = true
+			is_win = false
+			_play_gameover()
 
 func _spawn_hover_block(queue: bool = false) -> void:
+	if is_gameover: return
+	
 	if queue && !queue_spawn_hover_block:
 		queue_spawn_hover_block = true
 		return
@@ -118,13 +143,15 @@ func _spawn_hover_block(queue: bool = false) -> void:
 	if current_hover_block: return
 
 	var note_is_available = _has_available_note()
-	print("note_is_available ", note_is_available)
-	
+
 	var block_scene: PackedScene
 	var random = randf()
-	if note_is_available && random > 0.3:
+	if first_block:
+		first_block = false
+		block_scene = normal_block_scene
+	elif note_is_available && random > 0.6:
 		block_scene = note_block_scene
-	elif random < 0.2:
+	elif random < 0.25:
 		block_scene = bomb_block_scene
 	else:
 		block_scene = normal_block_scene
@@ -168,3 +195,30 @@ func _drop_blocks_in_slots() -> void:
 				if !slot.is_empty() && slot_below.is_empty():
 					slot.assigned_block.drop(slot_below)
 					slot_below.accept(slot.assigned_block)
+
+func _all_note_blocks_covered() -> bool:
+	for x in 8:
+		for y in 4:
+			var lane = lanes[y]
+			var slot = lane.get_child(x)
+			if slot.has_note() && slot.is_empty():
+				return false
+	return true
+	
+func _cannot_place_more_blocks() -> bool:
+	var lane = lanes[3]
+	for x in 8:
+		var slot = lane.get_child(x)
+		if slot.is_empty() || slot.assigned_block.get_meta("type") == "bomb":
+			return false
+	return true
+
+func _play_gameover() -> void:
+	current_hover_block.hide()
+	$BeatArrow.hide()
+	if is_win:
+		$GameOver.text = "Thank you for playing"
+	else:
+		$GameOver.text = "Game Over"	
+	$AnimationPlayer.current_animation = "gameover"
+	$AnimationPlayer.play()

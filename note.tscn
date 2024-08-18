@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=4 uid="uid://bq07leut6roig"]
+[gd_scene load_steps=5 format=4 uid="uid://bq07leut6roig"]
 
 [ext_resource type="Material" uid="uid://dj88kbjnt3b7u" path="res://note_material.tres" id="1_6enqh"]
 [ext_resource type="Script" path="res://note.gd" id="1_glact"]
-[ext_resource type="Texture2D" uid="uid://ba60p6mjsdr04" path="res://textures/masks_for_particles/10.png" id="4_oy06k"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_1fsqe"]
 resource_name = "eighth_note"
@@ -38,21 +37,11 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ll42"]
-transparency = 1
-albedo_texture = ExtResource("4_oy06k")
-billboard_mode = 1
-grow_amount = -0.669
-
-[sub_resource type="QuadMesh" id="QuadMesh_6luj0"]
-material = SubResource("StandardMaterial3D_1ll42")
-size = Vector2(0.2, 0.2)
-
 [node name="Note" type="Node3D"]
 script = ExtResource("1_glact")
 
 [node name="Meshes" type="Node3D" parent="."]
-transform = Transform3D(2.8, 0, 0, 0, 2.8, 0, 0, 0, 2.8, 0, 0, 0)
+transform = Transform3D(3.2, 0, 0, 0, 3.2, 0, 0, 0, 3.2, 0, 0, 0)
 
 [node name="eighth_note" type="Node3D" parent="Meshes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.09, 0)
@@ -67,16 +56,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.075, -0.065, 0)
 [node name="quarter_note" type="MeshInstance3D" parent="Meshes/quarter_note"]
 mesh = SubResource("ArrayMesh_dsym2")
 skeleton = NodePath("")
-
-[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
-visible = false
-mesh = SubResource("QuadMesh_6luj0")
-emission_shape = 1
-emission_sphere_radius = 0.7
-direction = Vector3(0, 0, 0)
-gravity = Vector3(0, 0, 0)
-initial_velocity_min = 0.1
-initial_velocity_max = 0.3
 
 [node name="Audio" type="AudioStreamPlayer" parent="."]
 volume_db = -8.0

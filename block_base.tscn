@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://clfnkyqlwrcqq"]
+[gd_scene load_steps=7 format=3 uid="uid://clfnkyqlwrcqq"]
 
 [ext_resource type="Script" path="res://block.gd" id="1_khodc"]
 
@@ -36,10 +36,27 @@ tracks/0/keys = {
 "values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_hk5l5"]
+resource_name = "bounce"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 1.2),
+"transitions": PackedFloat32Array(0.5, 1, 1),
+"update": 0,
+"values": [Vector3(1.5, 1.5, 1.5), Vector3(1, 1, 1), Vector3(1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_t1ra2"]
 _data = {
 "RESET": SubResource("Animation_pcodk"),
-"block_destroy_shrink": SubResource("Animation_x51v1")
+"block_destroy_shrink": SubResource("Animation_x51v1"),
+"bounce": SubResource("Animation_hk5l5")
 }
 
 [node name="Block" type="Node3D"]

@@ -23,6 +23,8 @@ func hit_beat(loop_index: int) -> void:
 	$AnimationPlayer.play()
 	
 	if assigned_block:
+		assigned_block.hit_beat()
+		
 		if note && assigned_block.get_meta("type") == "note":
 			note.play(loop_index)
 		else:
