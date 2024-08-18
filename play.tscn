@@ -214,6 +214,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, -30)
 text = "press [space] to play"
 font_size = 256
 
+[node name="HowTo2" type="Label3D" parent="HowTo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.365, 0)
+text = "
+drop blocks to build back the beat"
+font_size = 200
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.934981, -0.24077, 0.260464, 0.0821646, 0.861367, 0.501295, -0.345051, -0.4473, 0.825144, 0, 6.36168, 0)
 
