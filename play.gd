@@ -99,7 +99,10 @@ func _try_drop(index: int) -> void:
 		var available_slot = _find_available_slot_at_index(index)
 		if available_slot:
 			current_hover_block.drop(available_slot)
-			current_hover_block = null
+		else:
+			current_hover_block.destroy_shrink()
+			
+		current_hover_block = null
 	
 func _find_available_slot_at_index(index: int) -> Node3D:
 	var last_empty_slot: Node3D
