@@ -65,12 +65,12 @@ func _process(delta: float) -> void:
 	beat_duration = (1.0 / (bpm * 2.0) * 60.0)
 	bar_duration = beat_duration * 8
 
-	var bar_time = $BGM.get_playback_position()
+	var bar_time = $BGM.get_playback_position() + AudioServer.get_time_since_last_mix()
 	while bar_time > bar_duration:
 		bar_time -= bar_duration
 
 	var beat_index: int = floori(bar_time / beat_duration)
-	
+
 	beat_time = bar_time - (beat_index * beat_duration)
 
 	if bar_time >= next_beat_index * beat_duration && bar_time < (next_beat_index + 1) * beat_duration:

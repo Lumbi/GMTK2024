@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cmlpcfl6y7leo"]
+[gd_scene load_steps=23 format=3 uid="uid://cmlpcfl6y7leo"]
 
 [ext_resource type="PackedScene" uid="uid://do8peygsek4ww" path="res://lane.tscn" id="1_sltb7"]
 [ext_resource type="Script" path="res://play.gd" id="1_uihu7"]
@@ -185,6 +185,9 @@ _data = {
 "play_start_camera": SubResource("Animation_shotd")
 }
 
+[sub_resource type="LabelSettings" id="LabelSettings_2hglg"]
+font_size = 32
+
 [node name="root" type="Node3D"]
 script = ExtResource("1_uihu7")
 
@@ -273,3 +276,10 @@ libraries = {
 }
 
 [node name="Fail" parent="." instance=ExtResource("9_52p7j")]
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="Debug" type="Label" parent="UI"]
+offset_right = 589.0
+offset_bottom = 182.0
+label_settings = SubResource("LabelSettings_2hglg")
