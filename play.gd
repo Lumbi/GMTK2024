@@ -170,6 +170,8 @@ func _spawn_hover_block(queue: bool = false) -> void:
 		block_scene = note_block_scene
 	elif randf() < 0.25:
 		block_scene = bomb_block_scene
+	elif randf() < 0.1:
+		block_scene = note_block_scene
 	else:
 		block_scene = normal_block_scene
 
@@ -188,14 +190,9 @@ func _has_available_note() -> bool:
 			if slot.has_note() && slot.is_empty():
 				if y == 0:
 					return true # exit early if on bottom lane
-				var below_slots_all_occupied = true
-				for by in range(y-1, -1, -1):
-					var below_lane = lanes[by]
-					var below_block = below_lane.get_child(x)
-					if below_block.is_empty():
-						below_slots_all_occupied = false
-						break
-				if below_slots_all_occupied:
+				var below_lane = lanes[y-1]
+				var below_block = below_lane.get_child(x)
+				if !below_block.is_empty():
 					return true
 	return false
 
